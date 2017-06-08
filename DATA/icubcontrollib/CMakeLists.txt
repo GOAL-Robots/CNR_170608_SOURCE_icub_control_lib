@@ -1,0 +1,29 @@
+# Copyright (C) 2014
+# CopyPolicy: Released under the terms of the GNU GPL v2.0.
+
+cmake_minimum_required(VERSION 2.8)
+SET(PROJECTNAME icub_controller_lib)
+PROJECT(${PROJECTNAME})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O2")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -std=c++11 -fPIC -O0 -ggdb")
+
+find_package(YARP)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${YARP_MODULE_PATH})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ICUB_MODULE_PATH})
+
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${ICUB_LINK_FLAGS}")
+
+set( INCLUDES 
+    ${PROJECT_SOURCE_DIR}/src
+    ${YARP_INCLUDE_DIRS} 
+    )
+
+
+set( LIBS  
+    ${YARP_LIBRARIES} 
+    )
+
+
+ADD_SUBDIRECTORY(src)
