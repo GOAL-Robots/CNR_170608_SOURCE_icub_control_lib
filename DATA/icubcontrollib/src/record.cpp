@@ -31,7 +31,7 @@ int main(void)
     {
         // POSITION CONTROL
 
-        Network yarp;
+    	yarp::os::Network yarp;
 
         // initialize the controller
         ICUB_controller icub( yarp );

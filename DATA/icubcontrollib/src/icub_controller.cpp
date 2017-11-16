@@ -177,7 +177,7 @@ const JointStorage ICUB_controller::reset_positions = JointIDValues{ {
 
 
 ICUB_controller::ICUB_controller(
-        Network &_yarp,
+		yarp::os::Network &_yarp,
         const BodyPartTypes& _body_part_types
         ) : curr_body_parts(_body_part_types), yarp(_yarp), mode(Mode::NONE)
 {
@@ -226,22 +226,22 @@ void ICUB_controller::init(
 
         yError("remote port: %s",remote_ports.c_str());
 
-        Property options;
+        yarp::os::Property options;
         options.put("device", "remote_controlboard");
         options.put("local", cur_local_ports.c_str());   //local port names
         options.put("remote", remote_ports.c_str());         //where we connect to
 
         // create a device
-        robot_devices[body_part_name] = std::unique_ptr<PolyDriver>(new PolyDriver(options) );
+        robot_devices[body_part_name] = std::unique_ptr<yarp::dev::PolyDriver>(new yarp::dev::PolyDriver(options) );
 
         if (not robot_devices[body_part_name]->isValid()) {
             yError("Device not available.  Here are the known devices:\n");
-            yError("%s", Drivers::factory().toString().c_str());
+            yError("%s", yarp::dev::Drivers::factory().toString().c_str());
             throw BadDeviceException();
         }
 
         // acquire the control-mode interface
-        IControlMode2 *control_mode;
+        yarp::dev::IControlMode2 *control_mode;
         if(not robot_devices[body_part_name]->view(control_mode) )
         {
             yError("problems acquiring the control-mode interface\n");
@@ -250,7 +250,7 @@ void ICUB_controller::init(
         control_modes[body_part_name] = control_mode;
 
         // acquire the position-control interface
-        IPositionControl *position_control;
+        yarp::dev::IPositionControl *position_control;
         if(not robot_devices[body_part_name]->view(position_control))
         {
             yError("problems acquiring the position-control interface\n");
@@ -260,7 +260,7 @@ void ICUB_controller::init(
         positions[body_part_name]->getAxes(&joints_number);
 
         // acquire the position-direct-control interface
-        IPositionDirect *position_direct_control;
+        yarp::dev::IPositionDirect *position_direct_control;
         if(not robot_devices[body_part_name]->view(position_direct_control))
         {
             yError("problems acquiring the position-direct-control interface\n");
@@ -270,7 +270,7 @@ void ICUB_controller::init(
         direct_positions[body_part_name]->getAxes(&joints_number);
 
         // acquire the velocity-control interface
-        IVelocityControl *velocity_control;
+        yarp::dev::IVelocityControl *velocity_control;
         if(not robot_devices[body_part_name]->view(velocity_control))
         {
             yError("problems acquiring the velocity-control interface\n");
@@ -279,7 +279,7 @@ void ICUB_controller::init(
         velocities[body_part_name] = velocity_control;
 
         // acquire the torque-control interface
-        ITorqueControl *torque_control;
+        yarp::dev::ITorqueControl *torque_control;
         if (not  robot_devices[body_part_name]->view(torque_control))
         {
             yError("problems acquiring the torque-control interface\n");
@@ -288,7 +288,7 @@ void ICUB_controller::init(
         torques[body_part_name] = torque_control;
 
         // acquire the amplifier-control interface
-        IAmplifierControl *amplifier_control;
+        yarp::dev::IAmplifierControl *amplifier_control;
         if (not  robot_devices[body_part_name]->view(amplifier_control))
         {
             yError("problems acquiring the amplifier-control interface\n");
@@ -297,7 +297,7 @@ void ICUB_controller::init(
         amplifiers[body_part_name] = amplifier_control;
 
         // acquire the encoders interface
-        IEncoders *encs;
+        yarp::dev::IEncoders *encs;
         if (not  robot_devices[body_part_name]->view(encs))
         {
             yError("problems acquiring the encoders interface\n");

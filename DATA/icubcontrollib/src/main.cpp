@@ -31,7 +31,7 @@ int main(void)
     {
         // POSITION CONTROL
 
-        Network yarp;
+    	yarp::os::Network yarp;
 
         double time_step = 1.0/150.0;
 

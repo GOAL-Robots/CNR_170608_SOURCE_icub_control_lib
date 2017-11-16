@@ -43,9 +43,8 @@
 #include <memory>
 #include <algorithm>
 
-using namespace yarp::os;
-using namespace yarp::dev;
-using namespace yarp::math;
+
+//using namespace yarp::math;
 
 //------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------
@@ -133,14 +132,14 @@ namespace std
 //------------------------------------------------------------------------------------------
 // ALIASES
 
-using robotDeviceMap = std::map<std::string, std::unique_ptr<PolyDriver> >;
-using controlModeMap = std::map<std::string, IControlMode2 * >;
-using torqueControlMap = std::map<std::string, ITorqueControl * >;
-using velocityControlMap = std::map<std::string, IVelocityControl * >;
-using positionControlMap = std::map<std::string, IPositionControl * >;
-using positionDirectControlMap = std::map<std::string, IPositionDirect * >;
-using amplifierControlMap = std::map<std::string, IAmplifierControl * >;
-using encodersMap = std::map<std::string, IEncoders * >;
+using robotDeviceMap = std::map<std::string, std::unique_ptr<yarp::dev::PolyDriver> >;
+using controlModeMap = std::map<std::string, yarp::dev::IControlMode2 * >;
+using torqueControlMap = std::map<std::string, yarp::dev::ITorqueControl * >;
+using velocityControlMap = std::map<std::string, yarp::dev::IVelocityControl * >;
+using positionControlMap = std::map<std::string, yarp::dev::IPositionControl * >;
+using positionDirectControlMap = std::map<std::string, yarp::dev::IPositionDirect * >;
+using amplifierControlMap = std::map<std::string, yarp::dev::IAmplifierControl * >;
+using encodersMap = std::map<std::string, yarp::dev::IEncoders * >;
 using Joints = std::vector<Joint>;
 using BodyPartTypes = std::vector<BodyPartType>;
 using BodyPartTypeName = std::pair<BodyPartType, std::string>;
@@ -402,7 +401,7 @@ struct JointStorage
 class ICUB_controller
 {
 
-    Network &yarp; //!< yarp connection
+	yarp::os::Network &yarp; //!< yarp connection
 
     BodyPartTypes curr_body_parts; //!< names of the bodies to use
     robotDeviceMap robot_devices; //!< the map of devices for each body part
@@ -429,7 +428,7 @@ class ICUB_controller
      * @param _bP a vector of the body parts to use in the simulation. (default to all)
      */
     ICUB_controller(
-            Network& _yarp,
+    		yarp::os::Network& _yarp,
             const BodyPartTypes& _body_part_types = { BodyPartType::HEAD,
                 BodyPartType::LEFT_ARM, BodyPartType::RIGHT_ARM,
                 BodyPartType::TORSO }
